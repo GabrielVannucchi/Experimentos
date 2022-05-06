@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .pad{
+            height: 80px;
+            width: 80px;
+            margin: 6px;
+            font-size: 60px;
+            font-weight: bold;
+        }
+    </style>
+    <title>Jogo da Velha</title>
+</head>
+<body style="background-color: rgb(255, 255, 168);">
+    <center>
+        <h1>Jogo da Velha</h1>
+        <button id="bt00" class="pad" onclick="funcPlay(0,0)">.</button>
+        <button id="bt01" class="pad" onclick="funcPlay(0,1)">.</button>
+        <button id="bt02" class="pad" onclick="funcPlay(0,2)">.</button><br>
+        <button id="bt10" class="pad" onclick="funcPlay(1,0)">.</button>
+        <button id="bt11" class="pad" onclick="funcPlay(1,1)">.</button>
+        <button id="bt12" class="pad" onclick="funcPlay(1,2)">.</button><br>
+        <button id="bt20" class="pad" onclick="funcPlay(2,0)">.</button>
+        <button id="bt21" class="pad" onclick="funcPlay(2,1)">.</button>
+        <button id="bt22" class="pad" onclick="funcPlay(2,2)">.</button><br>
+        <h2 id="spMsg"></h2>
+        <button id="btReset" onclick="funcReset()">Reset</button>
+    </center>
+</body>
+</html>
+<script>
+    var vez = 'X';
+    var empate = false;
+    var tabuleiro = [['N','N','N'],['N','N','N'],['N','N','N']];
+    var jogada = false;        
+    
+    function funcPlay(num1, num2) {
+        if(tabuleiro[num1][num2] == 'N'){
+            document.getElementById(`bt${num1}${num2}`).innerHTML = vez;
+            tabuleiro[num1][num2] = vez;
+        }
+        //vitória;
+        funcVitoria('X');
+    }
+    function funcReset() {
+        vez = 'X';
+        empate = false;
+        tabuleiro = [['N','N','N'],['N','N','N'],['N','N','N']]; 
+        for(var i = 0; i <= 2; i++){
+            for(var j = 0; j <= 2; j++){
+                if(tabuleiro[i][j] == 'N'){
+                    document.getElementById(`bt${i}${j}`).innerHTML = '.';
+                }
+            }
+        }
+        spMsg.innerHTML = '';
+    }
+    function funcVitoria(vezAtual) {
+        if((tabuleiro[0][0] == tabuleiro[0][1] && tabuleiro[0][0] == tabuleiro[0][2] && tabuleiro[0][0] != 'N') ||
+            (tabuleiro[1][0] == tabuleiro[1][1] && tabuleiro[1][0] == tabuleiro[1][2] && tabuleiro[1][0] != 'N') ||
+            (tabuleiro[2][0] == tabuleiro[2][1] && tabuleiro[2][0] == tabuleiro[2][2] && tabuleiro[2][0] != 'N') ||
+            (tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[0][0] == tabuleiro[2][2] && tabuleiro[0][0] != 'N') ||
+            (tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[0][2] == tabuleiro[2][0] && tabuleiro[0][2] != 'N') ||
+            (tabuleiro[0][0] == tabuleiro[1][0] && tabuleiro[0][0] == tabuleiro[2][0] && tabuleiro[0][0] != 'N') ||
+            (tabuleiro[0][1] == tabuleiro[1][1] && tabuleiro[0][1] == tabuleiro[2][1] && tabuleiro[0][1] != 'N') ||
+            (tabuleiro[0][2] == tabuleiro[1][2] && tabuleiro[0][2] == tabuleiro[2][2] && tabuleiro[0][2] != 'N')
+            )
+        {
+            spMsg.innerHTML = `O jogador ${vezAtual} venceu!`;    
+
+        }else{    
+            //empate
+            empate = true;
+            for(var i = 0; i <= 2; i++){
+                for(var j = 0; j <= 2; j++){
+                    if(tabuleiro[i][j] == 'N'){
+                        empate = false;
+                    }
+                }
+            }
+            if(empate){
+                spMsg.innerHTML = "O jogo empatou!";
+                }else{
+                if(vez == 'X'){
+                    vez = 'O'; 
+                    iaJoga();
+                }else{
+                    vez = 'X';
+                }
+            }
+        }
+        
+    }
+    function iaJoga() {
+        jogada = false;
+        //IA tentar trancar uma jogada sua
+        funcJogadaIA('X');
+        //IA tentar ganhar
+        funcJogadaIA('O');
+        //jogada aleatoria caso não tenha jogada mandatória para fazer 
+        var i = 0;
+        var j = 0; 
+        while(!jogada){
+            i = Math.trunc(Math.random()*3);
+            j = Math.trunc(Math.random()*3);
+            if(tabuleiro[i][j] == 'N'){
+                jogada = true;
+                tabuleiro[i][j] = 'O';
+                document.getElementById(`bt${i}${j}`).innerHTML = 'O';
+            }
+        }
+        
+        funcVitoria('O');
+
+    }
+    function funcJogadaIA(vezAtual) {
+        if(tabuleiro[0][0] == 'N' && jogada == false){
+            if((tabuleiro[0][1] == vezAtual && tabuleiro[0][2] == vezAtual) ||
+            (tabuleiro[1][0] == vezAtual && tabuleiro[2][0] == vezAtual) ||
+            (tabuleiro[1][1] == vezAtual && tabuleiro[2][2] == vezAtual)){
+                jogada = true;
+                bt00.innerHTML = 'O';
+                tabuleiro[0][0] = 'O';
+            }
+        }
+        if(tabuleiro[0][1] == 'N' && jogada == false){
+            if((tabuleiro[0][0] == vezAtual && tabuleiro[0][2] == vezAtual) ||
+            (tabuleiro[1][1] == vezAtual && tabuleiro[2][1] == vezAtual)){
+                jogada = true;
+                bt01.innerHTML = 'O';
+                tabuleiro[0][1] = 'O';
+            }
+        }
+        if(tabuleiro[0][2] == 'N' && jogada == false){
+            if((tabuleiro[0][0] == vezAtual && tabuleiro[0][1] == vezAtual) ||
+            (tabuleiro[1][2] == vezAtual && tabuleiro[2][2] == vezAtual) ||
+            (tabuleiro[2][0] == vezAtual && tabuleiro[1][1] == vezAtual))
+            {
+                jogada = true;
+                bt02.innerHTML = 'O';
+                tabuleiro[0][2] = 'O';
+            }
+        }
+        if(tabuleiro[1][0] == 'N' && jogada == false){
+            if((tabuleiro[0][0] == vezAtual && tabuleiro[2][0] == vezAtual) ||
+            (tabuleiro[1][1] == vezAtual && tabuleiro[1][2] == vezAtual))
+            {
+                jogada = true;
+                bt10.innerHTML = 'O';
+                tabuleiro[1][0] = 'O';
+            }
+        }
+        if(tabuleiro[1][1] == 'N' && jogada == false){
+            if((tabuleiro[0][0] == vezAtual && tabuleiro[2][2] == vezAtual) ||
+            (tabuleiro[0][2] == vezAtual && tabuleiro[2][0] == vezAtual) ||
+            (tabuleiro[0][1] == vezAtual && tabuleiro[2][1] == vezAtual) ||
+            (tabuleiro[1][0] == vezAtual && tabuleiro[1][2] == vezAtual))
+            {
+                jogada = true;
+                bt11.innerHTML = 'O';
+                tabuleiro[1][1] = 'O';
+            }
+        }
+        if(tabuleiro[1][2] == 'N' && jogada == false){
+            if((tabuleiro[0][2] == vezAtual && tabuleiro[2][2] == vezAtual) ||
+            (tabuleiro[1][0] == vezAtual && tabuleiro[1][1] == vezAtual))
+            {
+                jogada = true;
+                bt12.innerHTML = 'O';
+                tabuleiro[1][2] = 'O';
+            }
+        }
+        if(tabuleiro[2][0] == 'N' && jogada == false){
+            if((tabuleiro[2][1] == vezAtual && tabuleiro[2][2] == vezAtual) ||
+            (tabuleiro[0][0] == vezAtual && tabuleiro[1][0] == vezAtual) ||
+            (tabuleiro[1][1] == vezAtual && tabuleiro[0][2] == vezAtual))
+            {
+                jogada = true;
+                bt20.innerHTML = 'O';
+                tabuleiro[2][0] = 'O';
+            }
+        }
+        if(tabuleiro[2][1] == 'N' && jogada == false){
+            if((tabuleiro[2][0] == vezAtual && tabuleiro[2][2] == vezAtual) ||
+            (tabuleiro[0][1] == vezAtual && tabuleiro[1][1] == vezAtual))
+            {
+                jogada = true;
+                bt21.innerHTML = 'O';
+                tabuleiro[2][1] = 'O';
+            }
+        }
+        if(tabuleiro[2][2] == 'N' && jogada == false){
+            if((tabuleiro[2][0] == vezAtual && tabuleiro[2][1] == vezAtual) ||
+            (tabuleiro[0][0] == vezAtual && tabuleiro[1][1] == vezAtual) ||
+            (tabuleiro[0][2] == vezAtual && tabuleiro[1][2] == vezAtual))
+            {
+                jogada = true;
+                bt22.innerHTML = 'O';
+                tabuleiro[2][2] = 'O';
+            }
+        }
+    }
+</script>
