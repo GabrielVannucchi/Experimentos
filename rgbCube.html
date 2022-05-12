@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainbow Cube</title>
+</head>
+<body>
+    <button onclick="funcRainbow();">Aperte-me</button>
+    <div id="cubo" style="width: 500px; height: 500px; background-color:rgb(0, 0, 0);" ></div>
+</body>
+<script>
+    var varRed = 0;
+    var varGreen = 0;
+    var varBlue = 0;
+    var boolRed = true;
+    var boolGreen = true;
+    var boolBlue = true;
+    
+    function funcRainbow() {
+        //Red
+        if (boolRed == true) {
+            varRed += Math.floor( Math.random() * 9 );    
+            if (varRed >= 210) {
+                varRed = 210;
+                boolRed = false;
+            }
+        }else{
+            
+            varRed-= Math.floor( Math.random() * 9 );
+            if (varRed <= 100) {
+                varRed = 100;
+                boolRed = true;
+            }
+            
+        }
+        //Green
+        if (boolGreen == true) {
+            varGreen += Math.floor( Math.random() * 9 );    
+            if (varGreen >= 210) {
+                varGreen = 210;
+                boolGreen = false;
+            }
+        }else{
+            
+            varGreen-= Math.floor( Math.random() * 9 );
+            if (varGreen <= 100) {
+                varGreen = 100;
+                boolGreen = true;
+            }
+            
+        }
+        //Blue
+        if (boolBlue == true) {
+            varBlue += Math.floor( Math.random() * 9 );    
+            if (varBlue >= 210) {
+                varBlue = 210;
+                boolBlue = false;
+            }
+        }else{
+            
+            varBlue-= Math.floor( Math.random() * 9 );
+            if (varBlue <= 100) {
+                varBlue = 100;
+                boolBlue = true;
+            }
+            
+        }
+        funcCubo();
+    }
+
+    function funcCubo() {
+        cubo.style.backgroundColor = 'rgb('+varRed+', '+varGreen+', '+varBlue+')';
+        setTimeout(funcRainbow,25);
+    }
+    
+    
+</script>
+</html>
