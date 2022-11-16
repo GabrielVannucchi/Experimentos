@@ -1,13 +1,11 @@
 
 package com.mycompany.inventario.itens;
 
-public class Item {
+public abstract class Item {
     private Integer id;
     private String nome;
     
-    public void usar(){
-        
-    }
+    public abstract void usar();
     
     //
     public Integer getId() {

@@ -1,6 +1,7 @@
 package com.mycompany.inventario;
 
 import com.mycompany.inventario.itens.Consumivel;
+import com.mycompany.inventario.itens.Equipamento;
 import com.mycompany.inventario.itens.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,13 +129,12 @@ public class Inventario {
     //////////////////
     public void criarItens() {
         listaItens.add(new Consumivel(itemAutoIncrement(), "Poção de Vida","aaaaa"));
-        listaItens.add(new Item(itemAutoIncrement(), "Poção de Mana"));
-        listaItens.add(new Item(itemAutoIncrement(), "Poção da Invisibilidade"));
-
-        listaItens.add(new Item(itemAutoIncrement(), "Espada Enferrujada"));
-        listaItens.add(new Item(itemAutoIncrement(), "Capa da Invisibilidade"));
-        listaItens.add(new Item(itemAutoIncrement(), "Escudo da Bravura"));
-        listaItens.add(new Item(itemAutoIncrement(), "Botas da Rapidez"));
+        listaItens.add(new Consumivel(itemAutoIncrement(), "Poção de Mana","aaaaa"));
+        listaItens.add(new Consumivel(itemAutoIncrement(), "Poção da Invisibilidade","aaaaa"));
+        listaItens.add(new Equipamento(itemAutoIncrement(), "Espada Enferrujada"));
+        listaItens.add(new Equipamento(itemAutoIncrement(), "Capa da Invisibilidade"));
+        listaItens.add(new Equipamento(itemAutoIncrement(), "Escudo da Bravura"));
+        listaItens.add(new Equipamento(itemAutoIncrement(), "Botas da Rapidez"));
 
     }
 
